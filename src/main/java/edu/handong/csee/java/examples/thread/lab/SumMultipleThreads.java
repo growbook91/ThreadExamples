@@ -8,7 +8,7 @@ public class SumMultipleThreads {
 
 		long to = 10000000;
 		ArrayList<SumRunner> sumRunners = new ArrayList<SumRunner>();
-		ArrayList<Thread> threadsForSubSum = new ArrayList<Thread>();
+		ArrayList<Thread> threadsForSubSum = new ArrayList<Thread>();//여기 안에 있는 모든 thread가 종료되기까지 기달려라
 
 		/* Let a thread compute a sub-sum.
 		 * sumRunners.add(new SumMultipleThreads(1,1000000));
@@ -29,19 +29,30 @@ public class SumMultipleThreads {
 			thread.start();
 			threadsForSubSum.add(thread);
 			System.out.println("Thread-" + i + " started!");
-			try {
-				thread.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				thread.join();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+		}
+		
+		for(Thread i : threadsForSubSum) { //for문을 통한 전체출력
+		    if(i.isAlive()) {
+		    	try {
+					i.join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		    }
 		}
 
 		long grandTotal = 0;
 		for(SumRunner runner:sumRunners) {
 			grandTotal += runner.totalSum;
 		}
-
+		
 		System.out.println("Grand Total = " + grandTotal);
 	}
 
